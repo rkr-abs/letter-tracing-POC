@@ -1,0 +1,40 @@
+# Godot 4+ specific ignores
+.godot/
+override.cfg
+
+# Ignores
+## General
+.*
+*.tgz
+.import/*
+*.sqlite
+android/build/build
+android/build/.gradle
+android/build/.idea
+android/build/assets
+android/build/local.properties
+android/build/res/mipmap*
+android/build/src/debug
+android/build/src/release
+android/build/assetPacks/installTime/build
+android/build/assetPacks/installTime/src
+
+# Excludes
+## General
+!.git*
+!.npmignore
+
+## Dev
+!.editorconfig
+!.vscode
+.vscode/*
+!.vscode/launch.json
+/dist
+/src/lib
+!.storybook
+build/*
+assets/*
+
+!android/build/assetPacks/installTime/build.gradle
+!.gdignore
+!.build_version
