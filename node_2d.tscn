@@ -1,15 +1,18 @@
-[gd_scene load_steps=5 format=3 uid="uid://caowcdg0n71oc"]
+[gd_scene load_steps=6 format=3 uid="uid://caowcdg0n71oc"]
 
 [ext_resource type="Texture2D" uid="uid://fkbfv3fti2ax" path="res://icon.svg" id="1_g0dxf"]
 [ext_resource type="Script" path="res://node_2d.gd" id="1_g6aip"]
 [ext_resource type="Script" path="res://Icon.gd" id="2_yf32c"]
+[ext_resource type="Script" path="res://draw.gd" id="4_u1bb2"]
 
 [sub_resource type="Gradient" id="Gradient_yhav4"]
 offsets = PackedFloat32Array(0, 0.28, 0.673333, 1)
-colors = PackedColorArray(0.937601, 0.571351, 0.784768, 1, 0.04727, 0.226747, 0.225342, 1, 0.190971, 0.91606, 0.91038, 1, 1, 1, 1, 1)
+colors = PackedColorArray(0.937601, 0.571351, 0.784768, 1, 0.04727, 0.226747, 0.225342, 1, 0.0881864, 0.668044, 0.663971, 1, 0.0885599, 0.0885599, 0.0885599, 1)
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_g6aip")
+character = "B"
+fontSize = 32
 
 [node name="Icon" type="Sprite2D" parent="."]
 position = Vector2(541, 355)
@@ -20,10 +23,42 @@ script = ExtResource("2_yf32c")
 [node name="Line2D" type="Line2D" parent="."]
 width = 5.0
 gradient = SubResource("Gradient_yhav4")
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
 
 [node name="LineContainer" type="Node" parent="."]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -256.0
+offset_top = -256.0
+offset_right = 256.0
+offset_bottom = 256.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="SubViewport" type="SubViewport" parent="CanvasLayer/SubViewportContainer"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(128, 128)
+render_target_update_mode = 4
+
+[node name="Control" type="Control" parent="CanvasLayer/SubViewportContainer/SubViewport"]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 128.0
+offset_bottom = 128.0
+script = ExtResource("4_u1bb2")
 
 [node name="Check" type="Button" parent="CanvasLayer"]
 anchors_preset = 3

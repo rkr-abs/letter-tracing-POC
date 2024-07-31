@@ -7,6 +7,7 @@ extends Sprite2D
 
 @onready var line2D: Line2D = $"../Line2D"
 @onready var lineContainer = $"../LineContainer"
+@onready var sub_viewport = $"../CanvasLayer/SubViewportContainer/SubViewport"
 
 var mousePos: Vector2
 var image: Image
@@ -17,7 +18,8 @@ var pen: Line2D
 var ink: int
 
 func _ready():
-	image = Image.load_from_file("res://icon.svg")
+	await RenderingServer.frame_post_draw
+	image = sub_viewport.get_texture().get_image()
 	imageSize = image.get_size()
 	var textureNormal = ImageTexture.create_from_image(image)
 	texture = textureNormal
@@ -30,7 +32,6 @@ func _input(event):
 
 	if event is InputEventScreenTouch and event.pressed:
 		pen = line2D.duplicate(true)
-		pen.width *= scale.x
 		lineContainer.add_child(pen)
 
 	if event is InputEventScreenDrag:
