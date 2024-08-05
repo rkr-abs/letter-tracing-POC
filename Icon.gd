@@ -12,6 +12,7 @@ extends Sprite2D
 var mousePos: Vector2
 var image: Image
 var imageSize: Vector2i
+var textureNormal: ImageTexture
 var pixels: Array = []
 var filteredPixels: Array = []
 var pen: Line2D
@@ -21,7 +22,7 @@ func _ready():
 	await RenderingServer.frame_post_draw
 	image = sub_viewport.get_texture().get_image()
 	imageSize = image.get_size()
-	var textureNormal = ImageTexture.create_from_image(image)
+	textureNormal = ImageTexture.create_from_image(image)
 	texture = textureNormal
 	_setPixels()
 	_fillInk()
@@ -39,8 +40,17 @@ func _input(event):
 		var imageOffset = Vector2(imageSize/2) * scale
 		var point = (mousePos - position) + imageOffset
 		filteredPixels = filteredPixels.filter(func(pixel): return point.distance_to(pixel) > pen.width)
+		#_setColor(filteredPixels)
 		pen.add_point(mousePos)
 		ink = clamp(ink-1, 0, INF)
+
+func _setColor(pixels):
+	pixels.map(func(pixel):
+		pixel /= scale
+		image.set_pixel(pixel.x, pixel.y, Color.RED)
+	)
+	textureNormal = ImageTexture.create_from_image(image)
+	texture = textureNormal
 
 func _setPixels():
 	for row in imageSize.y:
