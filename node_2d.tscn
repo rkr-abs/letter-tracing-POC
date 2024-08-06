@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://704vuyl2j5tc" path="res://images/background.jpg" id="3_q8o36"]
 [ext_resource type="Script" path="res://pathFollow2D.gd" id="4_dq7e7"]
 [ext_resource type="Texture2D" uid="uid://deknefy71w7k5" path="res://images/aot-serious-cute-eren-yeager-kid-sticker.png" id="4_fcduc"]
-[ext_resource type="FontFile" uid="uid://cj04mqofavrna" path="res://fonts/ComicMono-Bold.ttf" id="7_vyla4"]
+[ext_resource type="FontFile" uid="uid://b5vh7er6m1hl1" path="res://fonts/ComicMono-Bold.ttf" id="7_vyla4"]
 [ext_resource type="Script" path="res://characterBody2D.gd" id="8_0epk4"]
 
 [sub_resource type="Curve2D" id="Curve2D_4qvah"]
@@ -29,6 +29,7 @@ default_font = ExtResource("7_vyla4")
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_l5tad")
+font = ExtResource("7_vyla4")
 animationDelay = 0.5
 
 [node name="Line2D" type="Line2D" parent="."]
@@ -37,6 +38,7 @@ scale = Vector2(5, 5)
 width = 1.0
 
 [node name="Pen" type="Line2D" parent="."]
+visible = false
 default_color = Color(4.81307e-07, 0.417963, 0.419027, 1)
 
 [node name="Polygon2D" type="Polygon2D" parent="."]

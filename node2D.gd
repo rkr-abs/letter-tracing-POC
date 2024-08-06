@@ -1,6 +1,7 @@
 extends Node2D
 
 @export_range(0.0, 1.0) var matchRatio: float = 0.9
+@export var font: FontFile
 @export var char: String = "A":
 	set(newChar):
 		char = newChar
@@ -19,6 +20,11 @@ var curPen
 var charPaths
 var isIconMoving = false
 var filteredPaths = []
+
+func _ready():
+	if font:
+		return
+	font = get_tree().root.get_theme_default_font()
 
 func _input(event):
 	if event.is_action_pressed("ui_accept"):
@@ -39,14 +45,12 @@ func _drawChar():
 		curve.add_point(point)
 	path_2d.curve = curve
 	$Path2D/PathFollow2D.progress_ratio = 0
-	filteredPaths = flat(charPaths)
+	filteredPaths = charPaths[0]
 	for paths in charPaths:
 		#_drawLine(paths)
 		_drawPolygon(paths)
 
 func getPaths(char, size):
-	var font = get_tree().root.get_theme_default_font()
-
 	var font_rid = font.get_rids()[0]
 	var text_server = TextServerManager.get_primary_interface()
 	var glyph_index = text_server.font_get_glyph_index(font_rid, size, char.unicode_at(0), 0)
@@ -90,8 +94,8 @@ func _moveHintIcon():
 	var origin = hintIconPath.transform.origin
 	hintIconPath.emitParticle(true)
 	var line = container.get_children().filter(func(child): return child is Polygon2D)[0]
-	#for line in lines:
 	isIconMoving = true
+	#for line in lines:
 	for point in line.polygon:
 		var tween = get_tree().create_tween()
 		tween.tween_property(hintIconPath, "position", line.position + point * line.scale, animationDelay)
@@ -102,7 +106,7 @@ func _moveHintIcon():
 
 func _handleDraw(event):
 	var mousePos = event.position
-	var point = mousePos 
+	var point = mousePos
 	filteredPaths = filteredPaths.filter(
 		func(pixel):
 			pixel = line2d.position + pixel * line2d.scale
@@ -121,12 +125,15 @@ func _on_character_changed(newChar):
 	char = newChar
 
 func _on_clear_pressed():
+	filteredPaths = charPaths[0]
 	for pen in pensContainer.get_children():
 		pen.clear_points()
 		pen.queue_free()
 
 func _on_check_pressed():
-	var ratio: float = 1.0 - (float(filteredPaths.size()) / float(flat(charPaths).size()))
+	if path_2d.get_node("PathFollow2D").get_progress_ratio() != 1.0:
+		return
+	var ratio: float = 1.0 - (float(filteredPaths.size()) / float(charPaths[0].size()))
 
 	if ratio >= matchRatio:
 		print("level Completed")
