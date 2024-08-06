@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://0d32m0s2x5tu"]
+[gd_scene load_steps=13 format=3 uid="uid://0d32m0s2x5tu"]
 
 [ext_resource type="Script" path="res://node2D.gd" id="1_l5tad"]
 [ext_resource type="Script" path="res://path2D.gd" id="2_01olv"]
@@ -7,7 +7,6 @@
 [ext_resource type="FontFile" uid="uid://dv57l5ox4mpxb" path="res://fonts/MigaeSemibold-3zd2M.otf" id="3_60v3r"]
 [ext_resource type="Texture2D" uid="uid://704vuyl2j5tc" path="res://images/background.jpg" id="3_q8o36"]
 [ext_resource type="PackedScene" uid="uid://c12upk56db8b0" path="res://Path.tscn" id="5_6dfqb"]
-[ext_resource type="PackedScene" uid="uid://dlojfpwho5rla" path="res://character.tscn" id="6_txad4"]
 [ext_resource type="FontFile" uid="uid://b5vh7er6m1hl1" path="res://fonts/ComicMono-Bold.ttf" id="7_vyla4"]
 
 [sub_resource type="Curve2D" id="Curve2D_4qvah"]
@@ -23,6 +22,7 @@ default_font = ExtResource("7_vyla4")
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_l5tad")
+pathScene = ExtResource("5_6dfqb")
 fontPaths = ExtResource("7_vyla4")
 animationDelay = 0.5
 
@@ -64,10 +64,6 @@ emission_shape = 2
 emission_sphere_radius = 13.0
 gravity = Vector2(50, 50)
 color = Color(0.498039, 0.980392, 0.52549, 1)
-
-[node name="Path2D" parent="." instance=ExtResource("5_6dfqb")]
-
-[node name="CharacterBody2D" parent="." instance=ExtResource("6_txad4")]
 
 [node name="HUI" type="CanvasLayer" parent="."]
 layer = -2
