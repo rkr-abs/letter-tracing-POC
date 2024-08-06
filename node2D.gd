@@ -38,7 +38,7 @@ func _input(event):
 		_handleDraw(event)
 
 func _drawChar():
-	charPaths = getPaths(char, fontSize)
+	charPaths = getPaths(char)
 	var curve  = Curve2D.new()
 	for point in charPaths[0]:
 		point = line2d.position + point * line2d.scale
@@ -50,11 +50,11 @@ func _drawChar():
 		#_drawLine(paths)
 		_drawPolygon(paths)
 
-func getPaths(char, size):
+func getPaths(char):
 	var font_rid = font.get_rids()[0]
 	var text_server = TextServerManager.get_primary_interface()
-	var glyph_index = text_server.font_get_glyph_index(font_rid, size, char.unicode_at(0), 0)
-	var contours = text_server.font_get_glyph_contours(font_rid, size, glyph_index)
+	var glyph_index = text_server.font_get_glyph_index(font_rid, fontSize, char.unicode_at(0), 0)
+	var contours = text_server.font_get_glyph_contours(font_rid, fontSize, glyph_index)
 	var contourPoints = _getContourPoints(contours)
 
 	return contourPoints.map(func(points: Array):
