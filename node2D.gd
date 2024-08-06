@@ -39,7 +39,7 @@ func _input(event):
 
 func _setChar():
 	_drawChar()
-	_addPath()
+	_createPaths()
 
 func _drawChar():
 	charOutlines = getPaths(defaultFont, char)
@@ -48,7 +48,7 @@ func _drawChar():
 		#_drawLine(paths)
 		_drawPolygon(paths)
 
-func _addPath():
+func _createPaths():
 	var curve  = Curve2D.new()
 	charPaths = getPaths(defaultFont, char)
 	for point in charPaths[0]:
