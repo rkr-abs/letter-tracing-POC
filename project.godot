@@ -21,11 +21,11 @@ AntialiasedLine2DTexture="*res://addons/antialiased_line2d/texture.gd"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/sprite-mask/plugin.cfg", "res://addons/trail_2d/plugin.cfg")
+enabled=PackedStringArray()
 
 [gui]
 
-theme/custom_font="res://fonts/ComicMono-Bold.ttf"
+theme/custom_font="res://fonts/primary.ttf"
 
 [input_devices]
 
