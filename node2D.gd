@@ -1,11 +1,11 @@
 extends Node2D
 
 @export_range(0.0, 1.0) var matchRatio: float = 0.9
-@export var font: FontFile
+@export var fontPaths: FontFile
 @export var char: String = "A":
 	set(newChar):
 		char = newChar
-		_drawChar()
+		_setChar()
 @export var fontSize: int = 48
 @export var animationDelay = 1.0
 @onready var hintIconPath = $HintIconPath
@@ -16,15 +16,15 @@ extends Node2D
 @onready var pensContainer = $PensContainer
 @onready var polygon_2d = $Polygon2D
 @onready var penLine = $Pen
+var defaultFont
 var curPen
 var charPaths
+var charOutlines
 var isIconMoving = false
 var filteredPaths = []
 
 func _ready():
-	if font:
-		return
-	font = get_tree().root.get_theme_default_font()
+	defaultFont = get_tree().root.get_theme_default_font()
 
 func _input(event):
 	if event.is_action_pressed("ui_accept"):
@@ -37,20 +37,28 @@ func _input(event):
 	if event is InputEventScreenDrag:
 		_handleDraw(event)
 
+func _setChar():
+	_drawChar()
+	_addPath()
+
 func _drawChar():
-	charPaths = getPaths(char)
+	charOutlines = getPaths(defaultFont, char)
+	
+	for paths in charOutlines:
+		#_drawLine(paths)
+		_drawPolygon(paths)
+
+func _addPath():
 	var curve  = Curve2D.new()
+	charPaths = getPaths(defaultFont, char)
 	for point in charPaths[0]:
 		point = line2d.position + point * line2d.scale
 		curve.add_point(point)
 	path_2d.curve = curve
 	$Path2D/PathFollow2D.progress_ratio = 0
 	filteredPaths = charPaths[0]
-	for paths in charPaths:
-		#_drawLine(paths)
-		_drawPolygon(paths)
-
-func getPaths(char):
+	
+func getPaths(font, char):
 	var font_rid = font.get_rids()[0]
 	var text_server = TextServerManager.get_primary_interface()
 	var glyph_index = text_server.font_get_glyph_index(font_rid, fontSize, char.unicode_at(0), 0)
@@ -125,7 +133,7 @@ func _on_character_changed(newChar):
 	char = newChar
 
 func _on_clear_pressed():
-	filteredPaths = charPaths[0]
+	filteredPaths = charOutlines[0]
 	for pen in pensContainer.get_children():
 		pen.clear_points()
 		pen.queue_free()
@@ -133,7 +141,7 @@ func _on_clear_pressed():
 func _on_check_pressed():
 	if path_2d.get_node("PathFollow2D").get_progress_ratio() != 1.0:
 		return
-	var ratio: float = 1.0 - (float(filteredPaths.size()) / float(charPaths[0].size()))
+	var ratio: float = 1.0 - (float(filteredPaths.size()) / float(charOutlines[0].size()))
 
 	if ratio >= matchRatio:
 		print("level Completed")

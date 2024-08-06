@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://c12upk56db8b0"]
+
+[ext_resource type="Script" path="res://pathFollow2D.gd" id="1_rlefm"]
+
+[sub_resource type="Curve2D" id="Curve2D_pve73"]
+
+[node name="Path2D" type="Path2D"]
+curve = SubResource("Curve2D_pve73")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="."]
+rotates = false
+loop = false
+script = ExtResource("1_rlefm")
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="PathFollow2D"]
+remote_path = NodePath("../../../CharacterBody2D")
+update_scale = false
+
+[node name="_Timer_17480" type="Timer" parent="PathFollow2D"]
+wait_time = 0.2
+one_shot = true
