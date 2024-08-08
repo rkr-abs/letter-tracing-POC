@@ -11,6 +11,7 @@ func _input(event):
 	if event is InputEventScreenTouch:
 		isPressed = event.is_pressed()
 		dragCharacter.emit(event.position)
+	
 	if event is InputEventScreenDrag:
 		dragCharacter.emit(event.position)
 

@@ -1,6 +1,6 @@
 extends Node2D
 
-@export var pathScene: PackedScene 
+@export var pathScene: PackedScene
 @export_range(0.0, 1.0) var matchRatio: float = 0.9
 @export var fontPaths: FontFile
 @export var char: String = "A":
@@ -15,6 +15,7 @@ extends Node2D
 @onready var pensContainer = $PensContainer
 @onready var polygon2d = $Polygon2D
 @onready var penLine = $Pen
+@onready var label = $HUI/Control/Label
 @onready var hintIconStartPos = hintIconPath.position
 var defaultFont
 var curPen
@@ -34,9 +35,6 @@ func _input(event):
 		curPen = penLine.duplicate(true)
 		pensContainer.add_child(curPen)
 
-	if event is InputEventScreenDrag:
-		_handleDraw(event)
-
 func _moveHintIcon():
 	if isIconMoving:
 		return
@@ -52,27 +50,8 @@ func _moveHintIcon():
 	hintIconPath.emitParticle(false)
 	isIconMoving = false
 
-func _handleDraw(event):
-	var mousePos = event.position
-	var point = mousePos
-	filteredPaths = filteredPaths.filter(
-		func(pixel):
-			pixel = line2d.position + pixel * line2d.scale
-			return point.distance_to(pixel) > penLine.width
-	)
-
-	curPen.add_point(mousePos)
-
 func _setChar():
-	_drawChar()
 	_createPaths()
-
-func _drawChar():
-	charOutlines = getPaths(defaultFont, char)
-	
-	for paths in charOutlines:
-		#_drawLine(paths)
-		_drawPolygon(paths)
 
 func _createPaths():
 	charPaths = getPaths(fontPaths, char)
@@ -80,12 +59,14 @@ func _createPaths():
 	for points in charPaths:
 		var path2d = pathScene.instantiate()
 		var curve  = Curve2D.new()
+		var lineNode = penLine.duplicate(true)
+		label.add_child(lineNode)
+		path2d.line2d = lineNode
 		for point in points:
-			curve.add_point(normalizeToPolygonPos(point))
+			curve.add_point( normalizeToPolygonPos(point))
 		path2d.curve = curve
 		add_child(path2d)
-		path2d.get_child(0).progress_ratio = 0
-
+	
 func getPaths(font, char):
 	var font_rid = font.get_rids()[0]
 	var text_server = TextServerManager.get_primary_interface()
@@ -108,17 +89,6 @@ func _getContourPoints(contours):
 		startIdx = endIdx
 		
 	return points
-
-func _drawPolygon(paths):
-	var polygon2d = polygon2d.duplicate(true)
-	polygon2d.polygon = paths
-	container.add_child(polygon2d)
-
-func _drawLine(paths):
-	var line = line2d.duplicate(true)
-	for path in paths:
-		line.add_point(path)
-	container.add_child(line)
 
 func _clearBoard():
 	container.get_children().map(func(child): child.queue_free())

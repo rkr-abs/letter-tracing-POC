@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://0d32m0s2x5tu"]
+[gd_scene load_steps=14 format=3 uid="uid://0d32m0s2x5tu"]
 
 [ext_resource type="Script" path="res://node2D.gd" id="1_l5tad"]
 [ext_resource type="Script" path="res://path2D.gd" id="2_01olv"]
@@ -20,28 +20,34 @@ default_font = SubResource("FontVariation_618k5")
 [sub_resource type="Theme" id="Theme_skjh2"]
 default_font = ExtResource("7_vyla4")
 
+[sub_resource type="LabelSettings" id="LabelSettings_6bfij"]
+font_size = 300
+
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_l5tad")
 pathScene = ExtResource("5_6dfqb")
 fontPaths = ExtResource("7_vyla4")
+fontSize = 300
 animationDelay = 0.5
 
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 4
+position = Vector2(273, 131)
+
 [node name="Line2D" type="Line2D" parent="."]
-position = Vector2(500, 350)
-scale = Vector2(5, 5)
-width = 1.0
+default_color = Color(0, 0, 0, 1)
+antialiased = true
 
 [node name="Pen" type="Line2D" parent="."]
-visible = false
+width = 50.0
 default_color = Color(4.81307e-07, 0.417963, 0.419027, 1)
-
-[node name="Polygon2D" type="Polygon2D" parent="."]
-position = Vector2(500, 350)
-scale = Vector2(5, 5)
-
-[node name="LinesContainer" type="Node" parent="."]
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
 
 [node name="PensContainer" type="Node" parent="."]
+
+[node name="LinesContainer" type="Node" parent="."]
 
 [node name="HintIconPath" type="Path2D" parent="."]
 position = Vector2(576, 480)
@@ -65,6 +71,11 @@ emission_sphere_radius = 13.0
 gravity = Vector2(50, 50)
 color = Color(0.498039, 0.980392, 0.52549, 1)
 
+[node name="Polygon2D" type="Polygon2D" parent="."]
+visible = false
+position = Vector2(492, 382)
+invert_enabled = true
+
 [node name="HUI" type="CanvasLayer" parent="."]
 layer = -2
 
@@ -86,6 +97,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_q8o36")
 expand_mode = 2
+stretch_mode = 5
 
 [node name="OptionButton" type="OptionButton" parent="HUI/Control"]
 layout_mode = 1
@@ -134,6 +146,28 @@ grow_vertical = 0
 focus_mode = 0
 theme = SubResource("Theme_skjh2")
 text = "CHECK"
+
+[node name="Label" type="Label" parent="HUI/Control"]
+self_modulate = Color(0, 0, 0, 1)
+clip_children = 2
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -303.0
+offset_top = -193.0
+offset_right = 299.0
+offset_bottom = 172.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+text = "1"
+label_settings = SubResource("LabelSettings_6bfij")
+horizontal_alignment = 1
+vertical_alignment = 1
+clip_text = true
 
 [connection signal="characterChanged" from="HUI/Control/OptionButton" to="." method="_on_character_changed"]
 [connection signal="item_selected" from="HUI/Control/OptionButton" to="HUI/Control/OptionButton" method="_on_item_selected"]
