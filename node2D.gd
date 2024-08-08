@@ -10,30 +10,17 @@ extends Node2D
 @export var fontSize: int = 48
 @export var animationDelay = 1.0
 @onready var hintIconPath = $HintIconPath
-@onready var line2d = $Line2D
-@onready var container = $LinesContainer
-@onready var pensContainer = $PensContainer
+@onready var container = $Container
 @onready var polygon2d = $Polygon2D
 @onready var penLine = $Pen
 @onready var label = $HUI/Control/Label
 @onready var hintIconStartPos = hintIconPath.position
-var defaultFont
-var curPen
 var charPaths
-var charOutlines
 var isIconMoving = false
-var filteredPaths = []
-
-func _ready():
-	defaultFont = get_tree().root.get_theme_default_font()
 
 func _input(event):
 	if event.is_action_pressed("ui_accept"):
 		_moveHintIcon()
-	
-	if event is InputEventScreenTouch and event.pressed:
-		curPen = penLine.duplicate(true)
-		pensContainer.add_child(curPen)
 
 func _moveHintIcon():
 	if isIconMoving:
@@ -51,6 +38,7 @@ func _moveHintIcon():
 	isIconMoving = false
 
 func _setChar():
+	label.text = char
 	_createPaths()
 
 func _createPaths():
@@ -63,9 +51,9 @@ func _createPaths():
 		label.add_child(lineNode)
 		path2d.line2d = lineNode
 		for point in points:
-			curve.add_point( normalizeToPolygonPos(point))
+			curve.add_point(normalizeToPolygonPos(point))
 		path2d.curve = curve
-		add_child(path2d)
+		container.add_child(path2d)
 	
 func getPaths(font, char):
 	var font_rid = font.get_rids()[0]
@@ -91,7 +79,8 @@ func _getContourPoints(contours):
 	return points
 
 func _clearBoard():
-	container.get_children().map(func(child): child.queue_free())
+	for node in [label, container]:
+		node.get_children().map(func(child): child.queue_free())
 
 func flat(array):
 	var res = []
@@ -105,16 +94,10 @@ func _on_character_changed(newChar):
 	_clearBoard()
 	char = newChar
 
-func _on_clear_pressed():
-	filteredPaths = charOutlines[0]
-	for pen in pensContainer.get_children():
-		pen.clear_points()
-		pen.queue_free()
-
 func _on_check_pressed():
-	var ratio: float = 1.0 - (float(filteredPaths.size()) / float(charOutlines[0].size()))
+	var isCompleted = container.get_children().all(func(child): return child.isFilled)
 
-	if ratio >= matchRatio:
+	if isCompleted:
 		print("level Completed")
 	else:
 		print("Try Again")

@@ -34,10 +34,6 @@ animationDelay = 0.5
 z_index = 4
 position = Vector2(273, 131)
 
-[node name="Line2D" type="Line2D" parent="."]
-default_color = Color(0, 0, 0, 1)
-antialiased = true
-
 [node name="Pen" type="Line2D" parent="."]
 width = 50.0
 default_color = Color(4.81307e-07, 0.417963, 0.419027, 1)
@@ -45,9 +41,7 @@ joint_mode = 2
 begin_cap_mode = 2
 end_cap_mode = 2
 
-[node name="PensContainer" type="Node" parent="."]
-
-[node name="LinesContainer" type="Node" parent="."]
+[node name="Container" type="Node" parent="."]
 
 [node name="HintIconPath" type="Path2D" parent="."]
 position = Vector2(576, 480)
@@ -119,19 +113,6 @@ popup/item_1/text = "1"
 popup/item_1/id = 1
 script = ExtResource("3_2t32y")
 
-[node name="Clear" type="Button" parent="HUI/Control"]
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_top = -57.0
-offset_right = 103.0
-grow_vertical = 0
-focus_mode = 0
-theme = SubResource("Theme_skjh2")
-text = "Clear
-"
-
 [node name="Check" type="Button" parent="HUI/Control"]
 layout_mode = 1
 anchors_preset = 3
@@ -171,5 +152,4 @@ clip_text = true
 
 [connection signal="characterChanged" from="HUI/Control/OptionButton" to="." method="_on_character_changed"]
 [connection signal="item_selected" from="HUI/Control/OptionButton" to="HUI/Control/OptionButton" method="_on_item_selected"]
-[connection signal="pressed" from="HUI/Control/Clear" to="." method="_on_clear_pressed"]
 [connection signal="pressed" from="HUI/Control/Check" to="." method="_on_check_pressed"]
