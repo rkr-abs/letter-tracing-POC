@@ -6,9 +6,8 @@ func _ready():
 	add_alphabet_items()
 
 func add_alphabet_items():
-	for i in range("A".unicode_at(0), "Z".unicode_at(0) + 1):
-		var letter = char(i)
-		add_item(letter, i)
+	for i in range(0,9):
+		add_item(str(i), i)
 
 func _on_item_selected(index):
 	if index <= 0:

@@ -1,6 +1,6 @@
 extends Node2D
 
-@export var pathScene: PackedScene
+@export var characterScene: PackedScene
 @export_range(0.0, 1.0) var matchRatio: float = 0.9
 @export var fontPaths: FontFile
 @export var char: String = "A":
@@ -38,22 +38,15 @@ func _moveHintIcon():
 	isIconMoving = false
 
 func _setChar():
-	label.text = char
+	#label.text = char
 	_createPaths()
 
 func _createPaths():
 	charPaths = getPaths(fontPaths, char)
 	charPaths.reverse()
-	for points in charPaths:
-		var path2d = pathScene.instantiate()
-		var curve  = Curve2D.new()
-		var lineNode = penLine.duplicate(true)
-		label.add_child(lineNode)
-		path2d.line2d = lineNode
-		for point in points:
-			curve.add_point(normalizeToPolygonPos(point))
-		path2d.curve = curve
-		container.add_child(path2d)
+	var character = characterScene.instantiate()
+	character.config = {"paths": charPaths, "label": char}
+	container.add_child(character)
 	
 func getPaths(font, char):
 	var font_rid = font.get_rids()[0]

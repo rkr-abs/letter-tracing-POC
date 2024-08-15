@@ -1,45 +1,33 @@
-[gd_scene load_steps=14 format=3 uid="uid://0d32m0s2x5tu"]
+[gd_scene load_steps=10 format=3 uid="uid://0d32m0s2x5tu"]
 
 [ext_resource type="Script" path="res://node2D.gd" id="1_l5tad"]
-[ext_resource type="Script" path="res://path2D.gd" id="2_01olv"]
+[ext_resource type="Script" path="res://HintIconPath.gd" id="2_01olv"]
 [ext_resource type="Texture2D" uid="uid://bxmqg0pmb6p6y" path="res://images/hand.png" id="2_c3ohi"]
+[ext_resource type="PackedScene" uid="uid://7c6h41n64sxj" path="res://character.tscn" id="2_dx665"]
 [ext_resource type="Script" path="res://optionButton.gd" id="3_2t32y"]
-[ext_resource type="FontFile" uid="uid://dv57l5ox4mpxb" path="res://fonts/MigaeSemibold-3zd2M.otf" id="3_60v3r"]
 [ext_resource type="Texture2D" uid="uid://704vuyl2j5tc" path="res://images/background.jpg" id="3_q8o36"]
-[ext_resource type="PackedScene" uid="uid://c12upk56db8b0" path="res://Path.tscn" id="5_6dfqb"]
-[ext_resource type="FontFile" uid="uid://b5vh7er6m1hl1" path="res://fonts/ComicMono-Bold.ttf" id="7_vyla4"]
+[ext_resource type="FontFile" uid="uid://43xmf8kfnhyh" path="res://fonts/ComicMono-Bold.ttf" id="7_vyla4"]
 
 [sub_resource type="Curve2D" id="Curve2D_4qvah"]
-
-[sub_resource type="FontVariation" id="FontVariation_618k5"]
-base_font = ExtResource("3_60v3r")
-
-[sub_resource type="Theme" id="Theme_5nn0r"]
-default_font = SubResource("FontVariation_618k5")
-
-[sub_resource type="Theme" id="Theme_skjh2"]
-default_font = ExtResource("7_vyla4")
 
 [sub_resource type="LabelSettings" id="LabelSettings_6bfij"]
 font_size = 300
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_l5tad")
-pathScene = ExtResource("5_6dfqb")
+characterScene = ExtResource("2_dx665")
 fontPaths = ExtResource("7_vyla4")
-fontSize = 300
+fontSize = 250
 animationDelay = 0.5
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-z_index = 4
-position = Vector2(273, 131)
-
 [node name="Pen" type="Line2D" parent="."]
+texture_filter = 1
 width = 50.0
 default_color = Color(4.81307e-07, 0.417963, 0.419027, 1)
 joint_mode = 2
 begin_cap_mode = 2
 end_cap_mode = 2
+round_precision = 32
 
 [node name="Container" type="Node" parent="."]
 
@@ -102,14 +90,13 @@ offset_left = -146.0
 offset_bottom = 73.0
 grow_horizontal = 0
 focus_mode = 0
-theme = SubResource("Theme_5nn0r")
 alignment = 1
 item_count = 2
 selected = 0
 allow_reselect = true
 popup/item_0/text = "CHOOSE"
 popup/item_0/id = 0
-popup/item_1/text = "1"
+popup/item_1/text = "12345"
 popup/item_1/id = 1
 script = ExtResource("3_2t32y")
 
@@ -125,7 +112,6 @@ offset_top = -57.0
 grow_horizontal = 0
 grow_vertical = 0
 focus_mode = 0
-theme = SubResource("Theme_skjh2")
 text = "CHECK"
 
 [node name="Label" type="Label" parent="HUI/Control"]
@@ -137,18 +123,16 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -303.0
-offset_top = -193.0
-offset_right = 299.0
-offset_bottom = 172.0
+offset_left = -312.0
+offset_top = -192.0
+offset_right = 310.0
+offset_bottom = 170.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
-text = "1"
 label_settings = SubResource("LabelSettings_6bfij")
 horizontal_alignment = 1
 vertical_alignment = 1
-clip_text = true
 
 [connection signal="characterChanged" from="HUI/Control/OptionButton" to="." method="_on_character_changed"]
 [connection signal="item_selected" from="HUI/Control/OptionButton" to="HUI/Control/OptionButton" method="_on_item_selected"]
