@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=3 uid="uid://c4hiywsaxtiuv"]
+
+[sub_resource type="Curve3D" id="Curve3D_5ftrm"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, -0.601479, 0, -0.81281, 0, 0, 0, 0, 0, 0, -0.105665, 0, -1.60936, 0, 0, 0, 0, 0, 0, -0.105665, 0, 0.373892),
+"tilts": PackedFloat32Array(0, 0, 0)
+}
+point_count = 3
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Path3D" type="Path3D" parent="."]
+curve = SubResource("Curve3D_5ftrm")
+
+[node name="CSGPolygon3D" type="CSGPolygon3D" parent="."]
+polygon = PackedVector2Array(-0.776965, 0.79113, -1.52009, 0.789569, -1.42705, 1.0421, -0.761669, 1.0705, -0.78781, 0.867308)
+mode = 2
+path_node = NodePath("../Path3D")
+path_interval_type = 0
+path_interval = 1.0
+path_simplify_angle = 0.0
+path_rotation = 2
+path_local = false
+path_continuous_u = false
+path_u_distance = 0.0
+path_joined = false
+smooth_faces = true
